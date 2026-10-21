@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Внимание!</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #ff0000;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        img {
+            max-width: 90%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 0 20px #ff0000;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff0000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🚨 СИСТЕМА ВЗЛОМАНА! 🚨</h1>
+    <!-- Можно вставить любую свою гифку/картинку -->
+    <img src="https://media.giphy.com/media/juLht8DiqMebR3DdzF/giphy.gif" alt="Rickroll Gif">
+
+    <!-- Фоновый звук (поставьте любую ссылку на .mp3) -->
+    <audio id="audio" src="https://www.myinstants.com/media/sounds/rick-roll.mp3" autoplay loop></audio>
+
+    <script>
+        // Функция запуска вибрации и звука
+        function startPrank() {
+            // Запуск паттерна вибрации: 500мс вибрирует, 200мс пауза (повторяется)
+            if ("vibrate" in navigator) {
+                navigator.vibrate([500, 200, 500, 200, 800, 200, 1000]);
+            }
+            
+            // Запуск звука
+            const audio = document.getElementById('audio');
+            audio.play().catch(() => {
+                // Если браузер заблокировал автовоспроизведение без клика,
+                // звук запустится при первом касании экрана
+                document.addEventListener('click', () => {
+                    audio.play();
+                    if ("vibrate" in navigator) {
+                        navigator.vibrate([500, 200, 500, 200, 800, 200, 1000]);
+                    }
+                }, { once: true });
+            });
+        }
+
+        // Запуск при загрузке страницы
+        window.onload = startPrank;
+    </script>
+</body>
+</html>
