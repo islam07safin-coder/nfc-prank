@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рулетка: Кто ты сегодня?</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #111116;
+            color: #ffffff;
+            font-family: 'Arial Black', Impact, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ffcc00;
+            text-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+        }
+
+        /* Контейнер рулетки */
+        .roulette-box {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Указатель стрелки сверху */
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 16px solid transparent;
+            border-right: 16px solid transparent;
+            border-top: 28px solid #ff0055;
+            z-index: 10;
+            filter: drop-shadow(0 0 8px #ff0055);
+        }
+
+        /* Колесо рулетки (52% ЛОХ / 48% ПАЦАН) */
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid #ffffff;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+            background: conic-gradient(
+                #ff2a55 0deg 187.2deg,  /* 52% ЛОХ (187.2°) */
+                #00e676 187.2deg 360deg /* 48% ПАЦАН (172.8°) */
+            );
+            transition: transform 4s cubic-bezier(0.15, 0.85, 0.35, 1.02);
+            position: relative;
+        }
+
+        .label {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+        }
+        .label-loh {
+            top: 62%;
+            left: 28%;
+            transform: rotate(-30deg);
+        }
+        .label-pacan {
+            top: 26%;
+            right: 22%;
+            transform: rotate(30deg);
+        }
+
+        .spin-btn {
+            margin-top: 25px;
+            padding: 14px 32px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #111;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+        }
+
+        .result-text {
+            margin-top: 15px;
+            font-size: 2.2rem;
+            height: 50px;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>КТО ТЫ СЕГОДНЯ? 🎰</h1>
+
+    <div class="roulette-box">
+        <div class="pointer"></div>
+        <div class="wheel" id="wheel">
+            <span class="label label-loh">ЛОХ</span>
+            <span class="label label-pacan">ПАЦАН</span>
+        </div>
+    </div>
+
+    <div class="result-text" id="result"></div>
+    <button class="spin-btn" id="spinBtn" onclick="spin()">КРУТИТЬ!</button>
+
+    <script>
+        let isSpinning = false;
+
+        function spin() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const wheel = document.getElementById('wheel');
+            const result = document.getElementById('result');
+            const btn = document.getElementById('spinBtn');
+            result.innerText = '';
+            btn.style.display = 'none';
+
+            // Шанс 52% на ЛОХ и 48% на ПАЦАН
+            const random = Math.random() * 100;
+            let targetDegree = 0;
+            let finalResult = '';
+
+            if (random < 52) {
+                targetDegree = 360 * 5 + Math.floor(Math.random() * 160) + 15; 
+                finalResult = 'ТЫ — ЛОХ! 🤡';
+            } else {
+                targetDegree = 360 * 5 + Math.floor(Math.random() * 150) + 195;
+                finalResult = 'ТЫ — ПАЦАН! 😎';
+            }
+
+            wheel.style.transform = `rotate(${targetDegree}deg)`;
+
+            setTimeout(() => {
+                result.innerText = finalResult;
+                isSpinning = false;
+                btn.innerText = 'ЕЩЁ РАЗ';
+                btn.style.display = 'inline-block';
+            }, 4000);
+        }
+
+        // Автозапуск при открытии с NFC
+        window.onload = function() {
+            setTimeout(spin, 400);
+        };
+    </script>
+</body>
+</html>
