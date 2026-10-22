@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Внимание! Списание средств</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #1a0000;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .alert-card {
+            background: #2b0b0b;
+            border: 2px solid #ff3b30;
+            border-radius: 20px;
+            padding: 30px 20px;
+            max-width: 360px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(255, 59, 48, 0.4);
+            animation: pulseCard 1s infinite alternate;
+        }
+
+        @keyframes pulseCard {
+            from { transform: scale(1); }
+            to { transform: scale(1.02); }
+        }
+
+        .icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            color: #ff3b30;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .amount {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 15px 0;
+        }
+
+        .desc {
+            font-size: 0.95rem;
+            color: #b0b0b0;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .btn {
+            background-color: #ff3b30;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 59, 48, 0.5);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="alert-card">
+        <div class="icon">💳</div>
+        <h1>Успешное списание</h1>
+        <div class="amount">- 7 490 ₽</div>
+        <div class="desc">
+            Оплата услуг связи, подписки и переводов по NFC-метке выполнена успешно. Средства списаны с вашего основного счета.
+        </div>
+        <button class="btn" id="actionBtn" onclick="triggerPrank()">ОТМЕНИТЬ ПЛАТЕЖ</button>
+    </div>
+
+    <script>
+        let triggered = false;
+
+        function triggerPrank() {
+            if (!triggered) {
+                triggered = true;
+                document.querySelector('h1').innerText = 'ОШИБКА ОТМЕНЫ!';
+                document.querySelector('.desc').innerText = 'Поздно! Деньги уже поступили на счет получателя. 😁';
+                document.getElementById('actionBtn').innerText = 'ХОРОШИЙ ПРАНК 👍';
+                document.getElementById('actionBtn').style.backgroundColor = '#34c759';
+            }
+        }
+
+        // Запуск вибрации и тревоги при открытии страницы или касании
+        function startVibrationAndEffect() {
+            if (navigator.vibrate) {
+                // Мощный цикл вибрации (длинные и короткие импульсы)
+                navigator.vibrate([400, 100, 400, 100, 800, 200, 500]);
+            }
+        }
+
+        // Запускаем сразу при загрузке (если разрешено браузером) и при любом клике
+        window.onload = function() {
+            startVibrationAndEffect();
+        };
+
+        document.body.addEventListener('click', startVibrationAndEffect);
+        document.body.addEventListener('touchstart', startVibrationAndEffect);
+    </script>
+</body>
+</html>
